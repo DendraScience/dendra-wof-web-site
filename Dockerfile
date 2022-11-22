@@ -26,6 +26,12 @@ RUN npm run lint
 
 # Builder layer
 FROM linter AS builder
+ENV VITE_TITLE Home
+ENV VITE_TITLE_TEMPLATE %s | WaterOneFlow
+ENV VITE_WEB_API_URL https://api.dendra-dev-ins1.cuahsi.dendra.science/v2
+ENV VITE_WEB_UI_URL https://dendra-dev-ins1.cuahsi.dendra.science
+ENV VITE_WOF_BASE_URL https://wof.dendra-dev-ins1.cuahsi.dendra.science
+ENV VITE_WOF_SERVICE cuahsi_1_1
 RUN npm run build
 RUN date > .buildtime
 
