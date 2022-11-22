@@ -1,0 +1,48 @@
+{
+  "name": "dendra-wof-web-site",
+  "version": "0.0.0",
+  "description": "WaterOneFlow Web Site to document and test the WaterOneFlow Web Service.",
+  "author": "J. Scott Smith",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview",
+    "serve:dist": "http-server --proxy http://localhost:8080? dist",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "npm run lint:js",
+    "ssr:dev": "npm run ssr:server",
+    "ssr:prod": "npm run build && npm run ssr:server:prod",
+    "ssr:server": "node ./src/server",
+    "ssr:server:prod": "cross-env NODE_ENV=production node ./src/server"
+  },
+  "type": "module",
+  "dependencies": {
+    "@vueuse/core": "^9.5.0",
+    "compression": "^1.7.4",
+    "express": "^4.18.2",
+    "pino": "^8.7.0",
+    "pino-pretty": "^9.1.1",
+    "qs": "^6.11.0",
+    "sirv": "^2.0.2",
+    "vite": "^3.2.4",
+    "vite-plugin-ssr": "^0.4.51",
+    "vue": "^3.2.40",
+    "vuetify": "^3.0.1",
+    "xml-beautify": "^1.2.3"
+  },
+  "devDependencies": {
+    "@mdi/js": "^7.0.96",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^9.7.0",
+    "pino-http": "^8.2.1",
+    "prettier": "^2.7.1",
+    "sass": "^1.56.1",
+    "unplugin-vue-components": "^0.22.9",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}
