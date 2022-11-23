@@ -42,8 +42,8 @@ USER node
 EXPOSE 8080
 # Copy source files; relies on .dockerignore
 COPY --from=builder /home/node/app/.buildtime .buildtime
-COPY --from=builder /home/node/app/dist /dist
-COPY --from=builder /home/node/app/src/server /server
+COPY --from=builder /home/node/app/dist dist/
+COPY --from=builder /home/node/app/src/server server/
 
 # Best practice: bypass the package.json's start
 CMD [ "node", "./server" ]
