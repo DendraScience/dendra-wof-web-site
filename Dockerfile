@@ -46,4 +46,4 @@ COPY --from=builder /home/node/app/dist dist/
 COPY --from=builder /home/node/app/src/server src/server/
 
 # Best practice: bypass the package.json's start
-CMD [ "node", "./server" ]
+CMD [ "node", "./src/server" ]
