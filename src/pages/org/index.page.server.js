@@ -1,5 +1,5 @@
 import { RenderErrorPage } from 'vite-plugin-ssr'
-import { denAPI } from '#root/lib/den-api'
+import { getDenAPI } from '#root/lib/den-api'
 import { slugify } from '#root/lib/utils'
 
 export const doNotPrerender = true
@@ -17,6 +17,7 @@ async function onBeforeRender(pageContext) {
   const { org } = pageContext.routeParams
 
   // Fetch organization
+  const denAPI = getDenAPI(pageContext)
   const organizations = await denAPI.findMany('organizations', {
     slug: slugify(org),
     $limit: 1

@@ -16,7 +16,7 @@ function defaultHeaders() {
 
 export class DenAPI {
   constructor(config) {
-    Object.assign(this, { url: import.meta.env.VITE_WEB_API_URL }, config)
+    Object.assign(this, config)
   }
 
   async _fetch(resource, init) {
@@ -64,4 +64,15 @@ export class DenAPI {
   }
 }
 
-export const denAPI = new DenAPI()
+let denAPI
+
+export function getDenAPI({ clientEnv, serverEnv }) {
+  if (!denAPI)
+    denAPI = new DenAPI({
+      url:
+        (clientEnv && clientEnv.WEB_API_URL) ||
+        (serverEnv && serverEnv.WEB_API_URL) ||
+        import.meta.env.VITE_WEB_API_URL
+    })
+  return denAPI
+}

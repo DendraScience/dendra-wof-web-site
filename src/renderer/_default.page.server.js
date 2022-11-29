@@ -21,6 +21,7 @@ export { render }
 
 // SEE: https://vite-plugin-ssr.com/data-fetching
 export const passToClient = [
+  'clientEnv',
   'errorInfo',
   'pageProps',
   'title',

@@ -197,9 +197,12 @@
 
 <script setup>
 import { computed, reactive } from 'vue'
+import { usePageContext } from '#root/renderer/usePageContext'
 import { getOperations } from '#root/lib/model'
 import { mdiOpenInNew } from '@mdi/js'
 import XmlBeautify from 'xml-beautify'
+
+const pageContext = usePageContext()
 
 const operations = reactive(getOperations())
 
@@ -218,7 +221,8 @@ const baseURL = computed(
   () =>
     new URL(
       props.org + '/' + import.meta.env.VITE_WOF_SERVICE,
-      import.meta.env.VITE_WOF_BASE_URL
+      (pageContext.clientEnv && pageContext.clientEnv.WOF_BASE_URL) ||
+        import.meta.env.VITE_WOF_BASE_URL
     )
 )
 
@@ -226,7 +230,8 @@ const uiURL = computed(
   () =>
     new URL(
       props.organization.slug ? 'orgs/' + props.organization.slug : '',
-      import.meta.env.VITE_WEB_UI_URL
+      (pageContext.clientEnv && pageContext.clientEnv.WEB_UI_URL) ||
+        import.meta.env.VITE_WEB_UI_URL
     )
 )
 

@@ -1,4 +1,4 @@
-import { denAPI } from '#root/lib/den-api'
+import { getDenAPI } from '#root/lib/den-api'
 
 export const doNotPrerender = true
 
@@ -11,8 +11,9 @@ export function getDocumentProps() {
   }
 }
 
-async function onBeforeRender() {
+async function onBeforeRender(pageContext) {
   // Fetch organizations
+  const denAPI = getDenAPI(pageContext)
   const organizations = await denAPI.findMany('organizations', {
     is_enabled: true,
     is_hidden: false,

@@ -1,8 +1,11 @@
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import compression from 'compression'
 import { renderPage } from 'vite-plugin-ssr'
 import Pino from 'pino'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const isProduction = process.env.NODE_ENV === 'production'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -50,6 +53,13 @@ async function startServer() {
 
   app.get('*', async (req, res, next) => {
     const pageContextInit = {
+      clientEnv: {
+        WEB_UI_URL: process.env.WEB_UI_URL,
+        WOF_BASE_URL: process.env.WOF_BASE_URL
+      },
+      serverEnv: {
+        WEB_API_URL: process.env.WEB_API_URL
+      },
       urlOriginal: req.originalUrl
     }
     const pageContext = await renderPage(pageContextInit)

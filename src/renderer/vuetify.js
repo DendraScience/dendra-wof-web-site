@@ -12,7 +12,7 @@ export default createVuetify({
   // directives,
 
   icons: {
-    defaultSet: 'mdi',
+    defaults: 'mdi',
     aliases,
     sets: {
       mdi
