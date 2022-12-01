@@ -18,6 +18,7 @@ async function onBeforeRender(pageContext) {
     is_enabled: true,
     is_hidden: false,
     $limit: 2000,
+    $select: ['_id', 'general_config', 'name'],
     $sort: { name: 1 }
   })
 
