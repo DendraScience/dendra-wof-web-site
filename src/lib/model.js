@@ -1,7 +1,7 @@
 export function getOperations() {
   const data = [
     {
-      name: 'GetSiteObject',
+      name: 'GetSiteInfo',
       description: `Given a site number, this method returns the site's metadata.
       Send the site code in this format: 'NetworkName:SiteCode'.`,
       method: 'POST',

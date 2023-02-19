@@ -7,8 +7,16 @@
             <h1 class="text-h4">
               {{ organization.name }}
               <v-btn
-                :href="uiURL.toString()"
+                :href="uiURL"
                 :icon="mdiOpenInNew"
+                size="small"
+                variant="text"
+                target="_blank"
+              ></v-btn>
+
+              <v-btn
+                :href="jsonURL"
+                :icon="mdiCodeJson"
                 size="small"
                 variant="text"
                 target="_blank"
@@ -21,7 +29,7 @@
           <v-col>
             <span class="mr-2">Base URL:</span>
             <v-code tag="code">
-              {{ baseURL.toString() }}
+              {{ baseURL }}
             </v-code>
           </v-col>
         </v-row>
@@ -30,8 +38,7 @@
           <v-col class="text-body-1">
             The following operations are supported. For a formal definition,
             please review the
-            <a :href="baseURL.toString() + '?WSDL'" target="_blank"
-              >Service Description</a
+            <a :href="baseURL + '?WSDL'" target="_blank">Service Description</a
             >.
           </v-col>
         </v-row>
@@ -199,7 +206,7 @@
 import { computed, reactive } from 'vue'
 import { usePageContext } from '#root/renderer/usePageContext'
 import { getOperations } from '#root/lib/model'
-import { mdiOpenInNew } from '@mdi/js'
+import { mdiCodeJson, mdiOpenInNew } from '@mdi/js'
 import XmlBeautify from 'xml-beautify'
 
 const pageContext = usePageContext()
@@ -217,23 +224,32 @@ const props = defineProps({
   }
 })
 
-const baseURL = computed(
-  () =>
-    new URL(
-      props.org + '/' + import.meta.env.VITE_WOF_SERVICE,
-      (pageContext.clientEnv && pageContext.clientEnv.WOF_BASE_URL) ||
-        import.meta.env.VITE_WOF_BASE_URL
-    )
-)
+const baseURL = computed(() => {
+  const url =
+    (pageContext.clientEnv && pageContext.clientEnv.WOF_BASE_URL) ||
+    import.meta.env.VITE_WOF_BASE_URL
+  return `${url}${url.endsWith('/') ? '' : '/'}${props.org}/${
+    import.meta.env.VITE_WOF_SERVICE
+  }`
+})
 
-const uiURL = computed(
-  () =>
-    new URL(
-      props.organization.slug ? 'orgs/' + props.organization.slug : '',
-      (pageContext.clientEnv && pageContext.clientEnv.WEB_UI_URL) ||
-        import.meta.env.VITE_WEB_UI_URL
-    )
-)
+const jsonURL = computed(() => {
+  const url =
+    (pageContext.clientEnv && pageContext.clientEnv.WEB_API_URL) ||
+    import.meta.env.VITE_WEB_API_URL
+  return `${url}${url.endsWith('/') ? '' : '/'}organizations/${
+    props.organization._id
+  }`
+})
+
+const uiURL = computed(() => {
+  const url =
+    (pageContext.clientEnv && pageContext.clientEnv.WEB_UI_URL) ||
+    import.meta.env.VITE_WEB_UI_URL
+  return `${url}${url.endsWith('/') ? '' : '/'}${
+    props.organization.slug ? 'orgs/' + props.organization.slug : ''
+  }`
+})
 
 async function cancel(op) {
   op.cancelled = true
@@ -268,7 +284,7 @@ function prettify(op) {
 
 async function submit(op) {
   const decoder = new TextDecoder()
-  const resource = baseURL.value.toString()
+  const resource = baseURL.value
   const { body, headers, method } = op
 
   op.bytes = 0

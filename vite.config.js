@@ -15,6 +15,9 @@ import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 // https://github.com/brillout/vite-plugin-ssr
 import ssr from 'vite-plugin-ssr/plugin'
 
+//https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+import vuetify from 'vite-plugin-vuetify'
+
 const envConfig = process.env.NODE_ENV === 'production' ? {} : {}
 
 // https://vitejs.dev/config/
@@ -26,6 +29,9 @@ export default defineConfig({
 	plugins: [
 		eslintPlugin(),
 		vue(),
+		vuetify({
+			autoImport: true
+		}),
 		Components({
 			resolvers: [Vuetify3Resolver()]
 		}),

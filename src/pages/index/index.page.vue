@@ -12,7 +12,7 @@
           v-model="search"
           :prepend-inner-icon="mdiMagnify"
           clearable
-          hide-details
+          hint="Enter a db name, instance, network name, organization name, slug or _id."
           label="Search"
           single-line
           variant="outlined"
@@ -52,12 +52,29 @@ const props = defineProps({
   }
 })
 
-const foundOrganizations = computed(() =>
-  props.organizations.filter(
-    ({ name }) =>
-      !search.value || name.toLowerCase().includes(search.value.toLowerCase())
+const foundOrganizations = computed(() => {
+  const value = search.value && search.value.toLowerCase().trim()
+  return props.organizations.filter(
+    ({ _id, external_refs, general_config, name, slug }) => {
+      return (
+        !value ||
+        _id === value ||
+        name.toLowerCase().includes(value) ||
+        slug.toLowerCase().startsWith(value) ||
+        (general_config &&
+          general_config.db_name &&
+          general_config.db_name.toLowerCase().includes(value)) ||
+        (general_config && general_config.db_instance === value) ||
+        (external_refs &&
+          external_refs.find(
+            ref =>
+              ref.type === 'his.odm.service.NetworkName' &&
+              ref.identifier.toLowerCase().includes(value)
+          ))
+      )
+    }
   )
-)
+})
 
 function getOrg(organization) {
   const wsdl = organization.general_config && organization.general_config.wsdl
